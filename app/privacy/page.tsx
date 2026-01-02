@@ -23,7 +23,7 @@ export default function Page() {
 
         {/* TABLE OF CONTENTS */}
         {/* TABLE OF CONTENTS */}
-        <aside className="md:w-[220px] h-fit">
+        <aside className="md:w-55 h-fit">
 
           <h2 className="font-bold mb-4 text-2xl">Table of Contents</h2>
 
@@ -31,7 +31,7 @@ export default function Page() {
             <li className=" bg-[#D0BFB3] rounded-2xl hover:bg-[#440C03] hover:text-white transition">
               <a
                 href="#introduction"
-                className="flex items-center gap-3 px-4 py-2 block no-underline hover:no-underline"
+                className="flex items-center gap-3 px-4 py-2  no-underline hover:no-underline"
               >
                 <FaFileSignature size={18} />
                 <span>Introduction</span>
@@ -41,7 +41,7 @@ export default function Page() {
             <li className=" bg-[#D0BFB3] rounded-2xl hover:bg-[#440C03] hover:text-white transition">
               <a
                 href="#data-collection"
-                className="flex items-center gap-3 px-4 py-2 block no-underline hover:no-underline"
+                className="flex items-center gap-3 px-4 py-2  no-underline hover:no-underline"
               >
                 <FaFileSignature size={18} />
                 <span>Data Collection</span>
@@ -51,7 +51,7 @@ export default function Page() {
             <li className=" bg-[#D0BFB3] rounded-2xl hover:bg-[#440C03] hover:text-white transition">
               <a
                 href="#types-of-data"
-                className="flex items-center gap-3 px-4 py-2 block no-underline hover:no-underline"
+                className="flex items-center gap-3 px-4 py-2  no-underline hover:no-underline"
               >
                 <FaFileSignature size={18} />
                 <span>Types of Data</span>
@@ -69,7 +69,7 @@ export default function Page() {
             Welcome to our Privacy Policy
           </h1>
 
-          <p className="mb-10 leading-relaxed mb-12">
+          <p className="leading-relaxed mb-12">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. A voluptatibus
             in repellat? Voluptatibus voluptas quam voluptates, libero, magni maiores
             vitae laboriosam natus quod quae dolorem veniam vero excepturi magnam id.
