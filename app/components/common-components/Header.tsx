@@ -38,6 +38,10 @@ export default function Header() {
           {" "}
           Contact-Us
         </Link>
+        <Link href="/login" className="animated-underline ">
+          {" "}
+          Login
+        </Link>
         <span>Experience</span>
         <span>About</span>
         <span>Community</span>

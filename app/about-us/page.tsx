@@ -43,13 +43,13 @@ export default function Page() {
             ever since the 1500s
           </p>
 
-          <div className="flex flex-col justify-center items-center -mt-25 p-12">
+          <div className="flex flex-col justify-center items-center  -mt-25 p-12">
             <Image
-              src="/images/aboutusimage.png"
+              src="/images/group-images.png"
               alt="Image"
               width={500}
               height={500}
-              className="w-300"
+              className="w-330"
             ></Image>
           </div>
         </div>
@@ -131,13 +131,13 @@ export default function Page() {
       </section>
 
       {/* Last Section */}
-      <section className="flex flex-row justify-center items-center gap-20 bg-[#F2F2F2]">
+      <section className="flex flex-row justify-center items-center gap-30 bg-[#F2F2F2]">
         {/* LEFT CONTENT */}
-        <div className="w-1/2 px-20 ">
+        <div className="w-1/2 p-10">
           <div className="font-serif">
-            <p className="mb-5">The Challenge</p>
+            <p className="mb-2 font-light">The Challenge</p>
             <h1 className="font-bold mb-10 text-4xl">What we Offer</h1>
-            <p className="text-lg">
+            <p className="text-lg font-light">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
               reprehenderit commodi, nesciunt quo ad libero maxime nam
               excepturi, perferendis saepe officiis atque voluptate corrupti, in
@@ -156,14 +156,14 @@ export default function Page() {
               officia, in voluptatem perspiciatis. In quisquam nostrum totam
               aperiam eum.
             </p>
-            <button className="bg-[#440C03] text-white rounded-4xl py-2 px-15">
+            <button className="bg-[#440C03] text-white rounded-4xl py-2 px-15 mb-5">
               Read More →
             </button>
           </div>
         </div>
 
         {/* RIGHT CONTENT */}
-        <div className="w-1/2">
+        <div className="w-1/2 ">
           <Image
             src="/images/about-us-what-we-offer.jpg"
             alt="about-us-what-we-offer"
