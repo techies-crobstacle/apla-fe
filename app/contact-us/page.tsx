@@ -105,12 +105,12 @@ export default function Page() {
             className="relative z-10 w-20"
           />
 
-          <h1 className="relative z-10 text-4xl font-bold">
-            Heading Here
+          <h1 className="relative z-10 text-4xl font-bold mb-5">
+            Enter Heading Here
           </h1>
-          <p className="  z-30 w-160 text-center items-center justify-center">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis tenetur quam voluptatibus numquam inventore officiis quibusdam, nesciunt sit optio quidem !</p>
+          <p className="  z-30 w-170 text-center  items-center justify-center mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis tenetur quam voluptatibus numquam inventore officiis quibusdam, nesciunt sit optio quidem  Lorem, ipsum dolor. Lorem ipsum dolor  consectetur.!</p>
 
-          <button className="z-30 px-16 py-1.5 rounded-4xl bg-[#d3b994] text-[#582419]">Explore Marketplace</button>
+          <button className="z-30 px-14 py-2.5 rounded-4xl bg-[#d3b994] text-[#582419]">Explore Marketplace</button>
         </div>
       </section>
     </>

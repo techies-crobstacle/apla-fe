@@ -1,21 +1,26 @@
-"use client"
+"use client";
 import React from "react";
 import Image from "next/image";
 import Counter from "../components/about-us/counter";
 
-
-
 export default function Page() {
-    
   return (
     <>
-      <section className="bg-[#ebe2d5]">
-        {/* HERO SECTION */}
+      {/* HERO SECTION */}
+      <section>
         <div className="relative min-h-[70vh] overflow-hidden bg-[url('/images/dislaimerbg.jpg')] bg-cover bg-center">
           <div className="absolute inset-0 bg-black/60"></div>
 
           <div className="relative z-10 flex flex-col items-center justify-center text-white text-center px-4 py-60 ">
-            <h1 className="text-6xl font-bold mb-6">About Us</h1>
+            <h1 className="text-6xl font-bold -mb-4">About Us</h1>
+             <svg className="mt-6 w-full h-6 mb-8" viewBox="0 1 400 30" fill="none">
+            <path
+              d="M5 15 C60 5, 120 10, 180 30 C240 5, 300 25, 395 15"
+              stroke="#000"
+              strokeWidth="6"
+              strokeLinecap="round"
+            />
+          </svg>
             <p className="text-sm max-w-2xl">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ratione
               aspernatur assumenda asperiores, vitae corrupti minus voluptates
@@ -25,23 +30,26 @@ export default function Page() {
             </p>
           </div>
         </div>
+      </section>
 
+      {/* Photo section with content */}
+      <section className="bg-[#ebe2d5]">
         {/* CONTENT SECTION */}
         <div className=" gap-20 pt-20 px-6 md:px-16">
           {/* Content section 1.0 */}
-          <p className="w-120 text-2xl  font-inter">
+          <p className="w-129 h-29 text-[22px]   font-inter">
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s
           </p>
 
-          <div className="flex flex-col justify-center items-center -mt-20">
+          <div className="flex flex-col justify-center items-center -mt-25 p-12">
             <Image
               src="/images/aboutusimage.png"
               alt="Image"
               width={500}
               height={500}
-              className="w-270"
+              className="w-300"
             ></Image>
           </div>
         </div>
@@ -100,7 +108,7 @@ export default function Page() {
         </div>
         <div className="w-1/4">
           <h1 className="font-bold text-4xl mb-1">
-             <Counter end={30000} suffix="+" />
+            <Counter end={30000} suffix="+" />
           </h1>
           <h1 className="font-bold text-xl">This is heading</h1>
           <p className="text-sm">
@@ -165,6 +173,8 @@ export default function Page() {
           />
         </div>
       </section>
+      {/* Empty Section */}
+      <section className="h-screen"></section>
     </>
   );
 }
