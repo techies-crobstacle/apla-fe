@@ -1,7 +1,11 @@
 "use client"
 import Navbar from "./components/common-components/Header";
+import Footer from "./components/common-components/Footer"
 import "./globals.css";
 import { usePathname } from "next/navigation";
+
+
+
 export default function RootLayout({
   children,
 }: {
@@ -23,6 +27,8 @@ export default function RootLayout({
 
         {/* PAGE CONTENT */}
         {children}
+
+        <Footer/>
 
       </body>
     </html>
