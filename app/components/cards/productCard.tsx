@@ -7,6 +7,8 @@ interface ProductCardProps {
   amount: string;
 }
 
+
+
 export default function ProductCard({
   photo,
   name,
@@ -24,9 +26,9 @@ export default function ProductCard({
         />
       </div>
 
-      <h1 className="font-bold text-lg mb-2">{name}</h1>
-      <p className="text-sm text-gray-700 grow mb-5 ">{description}</p>
-      <h1 className="font-black text-2xl">{amount} AUD</h1>
+      <h1 className="font-bold text-lg ">{name}</h1>
+      <p className="text-sm text-gray-700 grow mb-8 ">{description}</p>
+      <h1 className="font-black text-xl">{amount} AUD</h1>
       
     </div>
   );

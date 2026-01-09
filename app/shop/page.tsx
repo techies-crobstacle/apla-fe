@@ -1,49 +1,136 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import React, { useEffect, useMemo, useState } from "react";
 import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 import ProductCard from "../components/cards/productCard";
 
+/* =======================
+   TYPES
+======================= */
+
 type Product = {
   id: number;
+  brand: "Nike" | "Adidas" | "Zara" | "Puma";
+  category: "T-Shirt" | "Shirt" | "SweatShirt" | "Hoodies";
+  gender: "Male" | "Female";
   photo: string;
   name: string;
   description: string;
   amount: string;
 };
 
-export default function Page() {
-  const [view, setView] = useState("grid");
- const [products, setProducts] = useState<Product[]>([]);
+/* =======================
+   PAGE
+======================= */
 
-  // for Products Images, with descriptions
+export default function Page() {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [sort, setSort] = useState("");
+  const [view, setView] = useState<"grid" | "list">("grid");
+
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedGenders, setSelectedGenders] = useState<string[]>([]);
+
+  /* ---------- DATA FETCH ---------- */
   useEffect(() => {
     fetch("/api/products")
       .then((res) => res.json())
-      .then(setProducts);
+      .then((data) => {
+        if (Array.isArray(data)) setProducts(data);
+        else setProducts(data.data ?? []);
+      });
   }, []);
+
+  /* ---------- TOGGLE FILTER ---------- */
+  const toggleFilter = (
+    value: string,
+    setState: React.Dispatch<React.SetStateAction<string[]>>
+  ) => {
+    setState((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+    );
+  };
+
+  /* ---------- SORT ---------- */
+  const sortedProducts = useMemo(() => {
+    return [...products].sort((a, b) => {
+      if (sort === "price-low-high") {
+        return Number(a.amount) - Number(b.amount);
+      }
+      if (sort === "price-high-low") {
+        return Number(b.amount) - Number(a.amount);
+      }
+      return 0;
+    });
+  }, [products, sort]);
+
+  /* ---------- FILTER ---------- */
+  const filteredProducts = useMemo(() => {
+    return sortedProducts.filter((product) => {
+      const brandMatch =
+        selectedBrands.length === 0 || selectedBrands.includes(product.brand);
+
+      const categoryMatch =
+        selectedCategories.length === 0 ||
+        selectedCategories.includes(product.category);
+
+      const genderMatch =
+        selectedGenders.length === 0 ||
+        selectedGenders.includes(product.gender);
+
+      return brandMatch && categoryMatch && genderMatch;
+    });
+  }, [sortedProducts, selectedBrands, selectedCategories, selectedGenders]);
+
+  /* ---------- ACTIVE FILTER LABELS ---------- */
+  const activeFilters = [
+    ...selectedBrands,
+    ...selectedCategories,
+    ...selectedGenders,
+  ];
+
+  // clear section (ALL)
+  const clearAll = () => {
+    setSelectedBrands([]);
+    setSelectedCategories([]);
+    setSelectedGenders([]);
+  };
+
+  useEffect(() => {
+    console.log(products);
+  }, [products]);
+
+  // for remove filter (single)
+  const removeActiveFilter = (value: string) => {
+    setSelectedBrands((prev) => prev.filter((b) => b !== value));
+    setSelectedCategories((prev) => prev.filter((c) => c !== value));
+    setSelectedGenders((prev) => prev.filter((g) => g !== value));
+  };
 
   return (
     <section className="bg-[#EBE3D5]">
-      {/* HERO SECTION */}
+      {/* HERO */}
+      {/* HERO SECTION */}{" "}
       <section>
+        {" "}
         <div className="relative min-h-[35vh] bg-[url('/images/dislaimerbg.jpg')] bg-cover bg-center m-1 rounded-2xl overflow-hidden">
-          <div className="absolute inset-0 bg-black/30" />
-
+          {" "}
+          <div className="absolute inset-0 bg-black/30" />{" "}
           <div className="relative z-10 flex flex-col items-center justify-center text-white text-center py-40">
-            <h1 className="text-6xl font-bold -mb-4">Shop</h1>
+            {" "}
+            <h1 className="text-6xl font-bold -mb-4">Shop</h1>{" "}
             <svg className="mt-6 w-full h-6 mb-8" viewBox="0 1 400 30">
+              {" "}
               <path
                 d="M5 20 C80 10, 160 30, 240 22 C300 15, 350 25, 395 20"
                 stroke="#000"
                 strokeWidth="6"
                 strokeLinecap="round"
-              />
-            </svg>
-          </div>
-        </div>
+              />{" "}
+            </svg>{" "}
+          </div>{" "}
+        </div>{" "}
       </section>
-
       {/* MAIN SHOP LAYOUT */}
       <section className="max-w-378 mx-auto px-20 py-10 flex gap-8">
         {/* LEFT SIDEBAR */}
@@ -55,132 +142,178 @@ export default function Page() {
           <div className="mb-8">
             <div className="flex justify-between mb-3 text-sm font-medium">
               <span>Brand</span>
-              <span className="opacity-60 cursor-pointer">Reset</span>
+              <span
+                className="opacity-60 cursor-pointer"
+                onClick={() => setSelectedBrands([])}
+              >
+                Reset
+              </span>
             </div>
 
             {["Nike", "Adidas", "Zara", "Puma"].map((b) => (
-              <div key={b} className="flex justify-between text-lg mb-2">
-                <label className="flex gap-5 items-center ">
+              <label
+                key={b}
+                className="flex justify-between items-center text-lg mb-2"
+              >
+                <span className="flex gap-4 items-center">
                   <input
                     type="checkbox"
-                    className="accent-[#441208] scale-200"
+                    checked={selectedBrands.includes(b)}
+                    onChange={() => toggleFilter(b, setSelectedBrands)}
+                    className="accent-[#441208]"
                   />
                   {b}
-                </label>
+                </span>
                 <span className="opacity-60">32</span>
-              </div>
+              </label>
             ))}
+          </div>
 
-            <button className="mt-4 bg-[#3B0F06] text-white text-xs px-4 py-2 rounded-full">
-              Show More
-            </button>
+          {/* Category */}
+          <div className="mb-8">
+            <div className="flex justify-between mb-3 text-sm font-medium">
+              <span>Category</span>
+              <span
+                className="opacity-60 cursor-pointer"
+                onClick={() => setSelectedCategories([])}
+              >
+                Reset
+              </span>
+            </div>
+
+            {["T-Shirt", "Shirt", "SweatShirt", "Hoodies"].map((c) => (
+              <label
+                key={c}
+                className="flex justify-between items-center text-lg mb-2"
+              >
+                <span className="flex gap-4 items-center">
+                  <input
+                    type="checkbox"
+                    checked={selectedCategories.includes(c)}
+                    onChange={() => toggleFilter(c, setSelectedCategories)}
+                    className="accent-[#441208]"
+                  />
+                  {c}
+                </span>
+                <span className="opacity-60">32</span>
+              </label>
+            ))}
+          </div>
+
+          {/* Gender */}
+          <div className="mb-8">
+            <div className="flex justify-between mb-3 text-sm font-medium">
+              <span>Gender</span>
+              <span
+                className="opacity-60 cursor-pointer"
+                onClick={() => setSelectedGenders([])}
+              >
+                Reset
+              </span>
+            </div>
+
+            {["Male", "Female"].map((g) => (
+              <label
+                key={g}
+                className="flex justify-between items-center text-lg mb-2"
+              >
+                <span className="flex gap-4 items-center">
+                  <input
+                    type="checkbox"
+                    checked={selectedGenders.includes(g)}
+                    onChange={() => toggleFilter(g, setSelectedGenders)}
+                    className="accent-[#441208]"
+                  />
+                  {g}
+                </span>
+                <span className="opacity-60">32</span>
+              </label>
+            ))}
           </div>
         </aside>
 
         {/* RIGHT CONTENT */}
         <section className="flex-1">
+          {/* INFO */}
           <div className="mb-5">
             <h1>
-              Showing {1} out {9} of Product
+              Showing {filteredProducts.length} out of {products.length}{" "}
+              Products
             </h1>
           </div>
-          {/* Active Filter Se */}
-          <div className="flex items-center justify-between py-4">
-            {/* Left: Active Filters */}
-            <div className="flex items-center gap-6">
-              <h1 className="font-bold">Active Filters:</h1>
 
-              <div className="bg-[#6F433A] text-white px-4 py-1 rounded flex items-center gap-3">
-                Brand
-                <button className="font-bold">×</button>
-              </div>
+          {/* ACTIVE FILTERS */}
+          <div className="flex items-center gap-6 py-4">
+            <h1 className="font-bold">Active Filters:</h1>
 
-              <div className="bg-[#6F433A] text-white px-4 py-1 rounded flex items-center gap-3">
-                Men
-                <button className="font-bold">×</button>
-              </div>
-
-              <button className="underline text-sm text-gray-700 hover:text-black">
-                Clear All
-              </button>
-            </div>
-
-            {/* Right: Sorting */}
-
-            <div className="flex gap-5">
-              <select
-                // value={sort}
-                // onChange={(e) => setSort(e.target.value)}
-                className="py-2"
+            {activeFilters.map((f) => (
+              <div
+                key={f}
+                className="bg-[#6F433A] text-white px-4 py-1 rounded flex items-center gap-2"
               >
-                <option value="">Default sorting</option>
-                <option value="popularity">Sort by popularity</option>
-                <option value="rating">Sort by average rating</option>
-                <option value="latest">Sort by latest</option>
-                <option value="price-low-high">
-                  Sort by price: low to high
-                </option>
-                <option value="price-high-low">
-                  Sort by price: high to low
-                </option>
-              </select>
-              <div className="flex gap-4">
-                <button
-                  // onClick={() => setView("grid")}
-                  className={`p-2  rounded ${
-                    view === "grid" ? "border-black" : "border-gray-400"
-                  }`}
+                {f}
+                <span
+                  className="cursor-pointer font-bold"
+                  onClick={() => removeActiveFilter(f)}
                 >
-                  <HiOutlineViewGrid size={20} />
-                </button>
-
-                <button
-                  // onClick={() => setView("list")}
-                  className={`p-2 border rounded ${
-                    view === "list" ? "border-black" : "border-gray-400"
-                  }`}
-                >
-                  <HiOutlineViewList size={20} />
-                </button>
+                  ×
+                </span>
               </div>
+            ))}
+
+            <button
+              onClick={clearAll}
+              className="underline text-sm text-gray-700 hover:text-black"
+            >
+              Clear All
+            </button>
+          </div>
+
+          {/* SORT + VIEW */}
+          <div className="flex items-center justify-between py-4">
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="py-2"
+            >
+              <option value="">Default sorting</option>
+              <option value="price-low-high">Price: low to high</option>
+              <option value="price-high-low">Price: high to low</option>
+            </select>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setView("grid")}
+                className={`p-2 border rounded ${
+                  view === "grid" ? "border-black" : "border-gray-400"
+                }`}
+              >
+                <HiOutlineViewGrid size={20} />
+              </button>
+
+              <button
+                onClick={() => setView("list")}
+                className={`p-2 border rounded ${
+                  view === "list" ? "border-black" : "border-gray-400"
+                }`}
+              >
+                <HiOutlineViewList size={20} />
+              </button>
             </div>
           </div>
 
-          {/* Product Carts  */}
-          {/* 1 row ________________________________________API__________________________________________________*/}
-          <div className="grid grid-cols-3 gap-3">
-            {products.map((product) => (
+          {/* PRODUCTS */}
+          <div
+            className={
+              view === "grid" ? "grid grid-cols-3 gap-8" : "flex flex-col gap-3"
+            }
+          >
+            {filteredProducts.map((product) => (
               <ProductCard key={product.id} {...product} />
             ))}
-            <h1>Hello</h1>
           </div>
         </section>
       </section>
     </section>
   );
 }
-
-<div className="grid grid-cols-3 gap-3 items-stretch">
-  {/* Column 1 */}
-  <div className="bg-amber-50 p-4 rounded-xl flex flex-col h-full">
-    {/* Image */}
-    <div className="relative w-full h-80 mb-3">
-      <Image
-        src="/images/temp/1.jpg"
-        alt="Nike Jordan"
-        fill
-        className="object-cover rounded-lg"
-      />
-    </div>
-    {/* Title */}
-    <h1 className="font-bold text-lg mb-1">Nike Jordan</h1>
-    {/* Description */}
-    <p className="text-sm text-gray-700 grow">
-      Nike Jordan is famous because of basketball legend Michael Jordan's
-      partnership with Nike, which started in 1984.
-    </p>
-    <div className="flex flex-row">
-      <h1 className="font-black text-2xl">29.00 AUD</h1>
-    </div>
-  </div>
-</div>;
